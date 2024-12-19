@@ -126,8 +126,9 @@ export function Home() {
     },
   });
 
-  if (isLoading) return <EmptyState>Loading recipes...</EmptyState>;
+  if (isLoading) return (<EmptyState>Loading recipes...</EmptyState>);
   if (error) return <EmptyState>Error loading recipes</EmptyState>;
+
   if (!data?.recipes?.length) {
     return (
       <PageContainer>

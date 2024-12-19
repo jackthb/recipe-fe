@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 const Form = styled.form`
@@ -116,15 +117,15 @@ export function RecipeForm({ initialData, onSubmit }: RecipeFormProps) {
           )}
         </IngredientRow>
       ))}
-      
       <Button 
         type="button" 
         onClick={() => setIngredients([...ingredients, ""])}
       >
         Add Ingredient
       </Button>
-      
       <Button type="submit">Save Recipe</Button>
+      <Link to="/">← Back to Recipes</Link>
+
     </Form>
   );
 }
