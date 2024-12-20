@@ -1,26 +1,14 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useHistory } from "react-router-dom";
 import { RecipeForm } from "./RecipeForm";
-import { BASE_URL } from "../App";
-
-// Hardcoded -- this would presumably be the logged-in user's ID
-export const AUTHOR_ID = "851bcf04-bcbe-45fc-8376-e984e0f010cd"
+import { createRecipeMutation } from "../lib/recipes";
 
 export function CreateRecipe() {
   const history = useHistory();
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
-    mutationFn: async (data: { name: string; ingredients: string[] }) => {
-      const response = await fetch(`${BASE_URL}/recipe`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({...data, author_id: AUTHOR_ID}),
-      });
-      return response.json();
-    },
+    mutationFn: createRecipeMutation,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["recipes"] });
       history.push("/");

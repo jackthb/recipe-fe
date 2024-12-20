@@ -1,49 +1,15 @@
 import { useQuery } from "@tanstack/react-query";
 import { Link, useParams, useHistory } from "react-router-dom";
-import { BASE_URL } from "../App";
 import styled from "styled-components";
-
-interface RecipeDetail {
-    id: number;
-    name: string;
-    author_id: string;
-    author_name: string;
-    ingredients: {
-        id: string;
-        name: string;
-    }[];
-}
-
-export const Card = styled.div`
-min-width: 300px;
-    background: white;
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    max-width: 600px;
-    margin: 20px auto;
-    text-align: left;
-`;
+import { RecipeProps, recipeQuery } from "../lib/recipes";
+import { Card } from "./Primitives/Containers";
+import { Button } from "./Primitives/Button";
 
 const Header = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
-`;
-
-const Button = styled.button`
-    padding: 8px 16px;
-    border-radius: 4px;
-    cursor: pointer;
-    margin-left: 10px;
-    background: #007bff;
-    color: white;
-    border: none;
-
-    &:hover {
-        background: #0056b3;
-    }
 `;
 
 const IngredientList = styled.ul`
@@ -73,15 +39,9 @@ export function RecipeDetail() {
     const { id } = useParams<{ id: string }>();
     const history = useHistory();
 
-    const { data, isLoading, error } = useQuery<RecipeDetail>({
+    const { data, isLoading, error } = useQuery<RecipeProps>({
         queryKey: ['recipe', id],
-        queryFn: async () => {
-            const response = await fetch(`${BASE_URL}/recipe/${id}`);
-            if (!response.ok) {
-                throw new Error('Failed to fetch recipe');
-            }
-            return response.json();
-        },
+        queryFn: () => recipeQuery(id),
     });
 
     if (isLoading) return <div>Loading...</div>;
@@ -98,11 +58,8 @@ export function RecipeDetail() {
                     </Button>
                 </div>
             </Header>
-
-            
             <Title>{data.name}</Title>
             <AuthorInfo>Created by {data.author_name}</AuthorInfo>
-
             <h3>Ingredients:</h3>
             <IngredientList>
                 {data.ingredients.map(ingredient => (

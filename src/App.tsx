@@ -10,8 +10,6 @@ import { RecipeDetail } from './components/RecipeDetail';
 import { EditRecipe } from './components/EditRecipe';
 import { CreateRecipe } from './components/CreateRecipe';
 
-export const BASE_URL = 'http://localhost:8000'
-
 const App: React.FC = () => {
 
   return (

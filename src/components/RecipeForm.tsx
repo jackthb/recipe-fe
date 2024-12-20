@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { EditRecipeProps } from "../lib/recipes";
+import { RemoveButton } from "./Primitives/Button";
 
 const Form = styled.form`
   display: flex;
@@ -35,30 +37,8 @@ const IngredientRow = styled.div`
   gap: 1rem;
 `;
 
-const RemoveButton = styled.button`
-  background: none;
-  border: none;
-  color: red;
-  cursor: pointer;
-  font-size: 20px;
-  padding: 5px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  
-  transition: scale 0.2s;
-
-  &:hover {
-    scale: 1.2;
-    font-weight: bold;
-  }
-`;
-
 interface RecipeFormProps {
-  initialData?: {
-    name: string;
-    ingredients: string[];
-  };
+  initialData?: EditRecipeProps;
   onSubmit: (data: { name: string; ingredients: string[]}) => void;
 }
 

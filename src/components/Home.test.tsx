@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter } from "react-router-dom";
 import { describe, it, expect, beforeEach, vi } from 'vitest'
@@ -14,7 +14,8 @@ vi.mock(import("react-router-dom"), async (importOriginal) => {
         ...actual,
         useHistory: () => ({
             push: mockNavigate
-        })
+        }) as any
+        // any here is a workaround to avoid having to correctly type this
     }
 })
 
@@ -67,9 +68,7 @@ describe("Home", () => {
         render(<Home />, { wrapper });
 
         expect(screen.getByText("Loading recipes...")).toBeInTheDocument();
-        await waitFor(() => {
-            expect(screen.getByText("Pasta")).toBeInTheDocument();
-        });
+        expect(await screen.findByText("Pasta")).toBeInTheDocument();
         expect(screen.getAllByRole("button", { name: "View" })).toHaveLength(2);
         expect(screen.getByText("Cheeseburger")).toBeInTheDocument();
     });
@@ -84,9 +83,7 @@ describe("Home", () => {
 
         render(<Home />, { wrapper });
 
-        await waitFor(() => {
-            expect(screen.getByText("Pasta")).toBeInTheDocument();
-        });
+        expect(await screen.findByText("Pasta")).toBeInTheDocument();
 
         const viewButtons = screen.getAllByRole("button", { name: "View" });
 

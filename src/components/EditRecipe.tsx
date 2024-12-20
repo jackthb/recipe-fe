@@ -1,11 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useHistory, useParams } from "react-router-dom";
-import { BASE_URL } from "../App";
 import { RecipeForm } from "./RecipeForm";
-import { AUTHOR_ID } from "./CreateRecipe";
-import { Card } from "./RecipeDetail";
-import { Header } from "./Home";
 import styled from "styled-components";
+import { editRecipeMutation, EditRecipeProps, RecipeProps, recipeQuery } from "../lib/recipes";
+import { Card, Header } from "./Primitives/Containers";
 
 export const Title = styled.h2`
   color: #333;
@@ -17,25 +15,13 @@ export function EditRecipe() {
     const { push } = useHistory();
     const queryClient = useQueryClient();
 
-    const { data } = useQuery({
+    const { data } = useQuery<RecipeProps>({
         queryKey: ["recipe", id],
-        queryFn: async () => {
-            const response = await fetch(`${BASE_URL}/recipe/${id}`);
-            return response.json();
-        },
+        queryFn: () => recipeQuery(id)
     });
 
     const mutation = useMutation({
-        mutationFn: async (data: { name: string; ingredients: string[] }) => {
-            const response = await fetch(`${BASE_URL}/recipe/${id}`, {
-                method: "PATCH",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ ...data, author_id: AUTHOR_ID }),
-            });
-            return response.json();
-        },
+        mutationFn: (data: EditRecipeProps) => editRecipeMutation(id, data),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["recipe", id] });
             push("/")

@@ -1,45 +1,10 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { BASE_URL } from "../App";
 import styled from "styled-components";
 import { useHistory } from "react-router-dom";
-
-interface Recipe {
-  id: number;
-  name: string;
-  author_id: string;
-}
-
-export const PageContainer = styled.div`
-  margin: 0 auto;
-  padding: 20px;
-`;
-
-export const Header = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 3rem;
-  margin-bottom: 30px;
-`;
-
-export const Title = styled.h1`
-  color: #333;
-  margin: 0;
-`;
-
-const CreateButton = styled.button`
-  background: #28a745;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 16px;
-  
-  &:hover {
-    background: #218838;
-  }
-`;
+import { Button, CreateButton } from "./Primitives/Button";
+import { Recipe, RecipesQueryProps, deleteRecipeMutation, recipesQuery } from "../lib/recipes";
+import { Title } from "./EditRecipe";
+import { PageContainer, Header } from "./Primitives/Containers";
 
 const RecipeGrid = styled.div`
   display: grid;
@@ -66,30 +31,6 @@ const ButtonGroup = styled.div`
   margin-top: 15px;
 `;
 
-const Button = styled.button<{ variant?: 'primary' | 'danger' }>`
-  padding: 8px 12px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 14px;
-  
-  background: ${props => 
-    props.variant === 'danger' 
-      ? '#dc3545' 
-      : props.variant === 'primary' 
-        ? '#007bff' 
-        : '#6c757d'};
-  color: white;
-  
-  &:hover {
-    background: ${props => 
-      props.variant === 'danger' 
-        ? '#c82333' 
-        : props.variant === 'primary' 
-          ? '#0056b3' 
-          : '#5a6268'};
-  }
-`;
 
 const EmptyState = styled.div`
   text-align: center;
@@ -101,26 +42,13 @@ export function Home() {
   const history = useHistory();
   const queryClient = useQueryClient();
 
-  const { data, isLoading, error } = useQuery({
+  const { data, isLoading, error } = useQuery<RecipesQueryProps>({
     queryKey: ["recipes"],
-    queryFn: async () => {
-      const response = await fetch(`${BASE_URL}/recipes`);
-      if (!response.ok) {
-        throw new Error('Failed to fetch recipes');
-      }
-      return response.json();
-    },
+    queryFn: recipesQuery
   });
 
   const deleteMutation = useMutation({
-    mutationFn: async (id: number) => {
-      const response = await fetch(`${BASE_URL}/recipe/${id}`, {
-        method: "DELETE",
-      });
-      if (!response.ok) {
-        throw new Error('Failed to delete recipe');
-      }
-    },
+    mutationFn: deleteRecipeMutation,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["recipes"] });
     },

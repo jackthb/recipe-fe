@@ -47,9 +47,7 @@ describe("EditRecipe", () => {
         render(<EditRecipe />, { wrapper });
 
         expect(screen.getByText("Loading...")).toBeInTheDocument();
-        await waitFor(() => {
-            expect(screen.getByDisplayValue("Pasta")).toBeInTheDocument();
-        });
+        expect(await screen.findByDisplayValue("Pasta")).toBeInTheDocument();
     });
     
     it("submits updated recipe data", async () => {
@@ -65,9 +63,7 @@ describe("EditRecipe", () => {
 
         render(<EditRecipe />, { wrapper });
 
-        await waitFor(() => {
-            expect(screen.getByDisplayValue("Pasta")).toBeInTheDocument();
-        });
+        expect(await screen.findByDisplayValue("Pasta")).toBeInTheDocument();
 
         const nameInput = screen.getByLabelText(/name/i);
         await userEvent.clear(nameInput);
@@ -94,8 +90,6 @@ describe("EditRecipe", () => {
 
         render(<EditRecipe />, { wrapper });
 
-        await waitFor(() => {
-            expect(screen.getByText("Loading...")).toBeInTheDocument();
-        });
+        expect(await screen.findByText("Loading...")).toBeInTheDocument();
     });
 });
