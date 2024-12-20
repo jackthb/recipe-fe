@@ -9,12 +9,12 @@ interface Recipe {
   author_id: string;
 }
 
-const PageContainer = styled.div`
+export const PageContainer = styled.div`
   margin: 0 auto;
   padding: 20px;
 `;
 
-const Header = styled.div`
+export const Header = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -22,7 +22,7 @@ const Header = styled.div`
   margin-bottom: 30px;
 `;
 
-const Title = styled.h1`
+export const Title = styled.h1`
   color: #333;
   margin: 0;
 `;

@@ -56,12 +56,10 @@ const RemoveButton = styled.button`
 
 interface RecipeFormProps {
   initialData?: {
-    id?: string;
     name: string;
     ingredients: string[];
-    author_id: string;
   };
-  onSubmit: (data: { name: string; ingredients: string[], author_id?: string }) => void;
+  onSubmit: (data: { name: string; ingredients: string[]}) => void;
 }
 
 export function RecipeForm({ initialData, onSubmit }: RecipeFormProps) {
@@ -72,7 +70,6 @@ export function RecipeForm({ initialData, onSubmit }: RecipeFormProps) {
     e.preventDefault();
     const payload = { 
       name, 
-      author_id: initialData?.author_id,
       ingredients: ingredients.filter(i => i.trim() !== ""),
     };
     onSubmit(payload);

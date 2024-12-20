@@ -14,7 +14,8 @@ interface RecipeDetail {
     }[];
 }
 
-const Card = styled.div`
+export const Card = styled.div`
+min-width: 300px;
     background: white;
     padding: 20px;
     border-radius: 5px;
@@ -63,6 +64,11 @@ const AuthorInfo = styled.p`
     font-style: italic;
 `;
 
+const Title = styled.h2`
+  color: #333;
+  margin: 0;
+`;
+
 export function RecipeDetail() {
     const { id } = useParams<{ id: string }>();
     const history = useHistory();
@@ -93,7 +99,8 @@ export function RecipeDetail() {
                 </div>
             </Header>
 
-            <h1>{data.name}</h1>
+            
+            <Title>{data.name}</Title>
             <AuthorInfo>Created by {data.author_name}</AuthorInfo>
 
             <h3>Ingredients:</h3>

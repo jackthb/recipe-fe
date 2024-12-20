@@ -4,7 +4,7 @@ import { RecipeForm } from "./RecipeForm";
 import { BASE_URL } from "../App";
 
 // Hardcoded -- this would presumably be the logged-in user's ID
-const AUTHOR_ID = "851bcf04-bcbe-45fc-8376-e984e0f010cd"
+export const AUTHOR_ID = "851bcf04-bcbe-45fc-8376-e984e0f010cd"
 
 export function CreateRecipe() {
   const history = useHistory();
